@@ -1,0 +1,26 @@
+<% layout("./boiler/boilerplate.ejs") %>
+
+<h1 class="mt-2" style="margin-left: 10px; color: blue;"><i class="fa-solid fa-cart-shopping"></i> Your Cart </i></h1>
+<div class="container-fluid row">
+    <% for(let cart of allCart) { %>
+      <div class="col-12 col-lg-3 col-md-4 col-sm-12 mt-4">
+        <a href="/cart/<%=cart._id %>" class="all-men text-decoration-none">
+          <div class="card h-100 all">
+            <img src="<%= cart.image %>" class="card-img-top" alt="...">
+            <div class="card-body">
+              <p class="card-text"><b><%= cart.name %></b></p>
+              <p class="card-text">&dollar;&nbsp;<%= cart.price %></p>
+              <div class="button">
+              <button type="submit" class="btn btn-success" style="display: inline-block; margin-right: 10px;">Buy Now</button>
+              <form method="post" action="/delete/cart?_method=delete" style="display: inline-block; margin: 0;">
+                <input type="hidden" name="id" value="<%= cart._id  %>">
+                <button type="submit" class="btn btn-danger">Remove</button>
+            </form>
+            
+            </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    <% } %>
+  </div>
