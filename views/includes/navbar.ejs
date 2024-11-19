@@ -36,7 +36,7 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <% if(currUser){ %>
             <li class="nav-item">
-              <a class="nav-link"  aria-current="page" href="/cart" style="font-size: 25px; margin-left: 10px;"><i class="fa-solid fa-cart-shopping"></i>
+              <a class="nav-link"  aria-current="page" href="/cart" style="font-size: 20px; margin-left: 10px; font-weight: normal;"><i class="fa-solid fa-cart-shopping"></i>
                 <sup id="items"><%= typeof items !== 'undefined' ? items : 0 %></sup>
               </a>
             </li>
@@ -48,7 +48,7 @@
             <% } %>
             <% if(currUser){ %>
               <li class="nav-item">
-                <a class="nav-link" href="/logout">Logout</a>
+                <a class="nav-link" href="/logout" style="font-weight: normal;">Logout</a>
               </li>
               <% } %>
             </ul>

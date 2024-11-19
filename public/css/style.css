@@ -10,7 +10,6 @@ body{
 
 .nav-link:hover{
     color: blue;
-    font-weight: bolder;
 }
 .navbar-brand{
     color: blueviolet;

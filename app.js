@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express=require("express");
 const app=express();
 const path=require("path");
@@ -18,6 +19,7 @@ const search=require("./routes/search.js");
 const carte=require("./routes/cart.js");
 const reviewrouter=require("./routes/review.js");
 const flash=require("connect-flash");
+const Google=require("passport-google-oauth20");
 
 //middleware
 app.engine("ejs",ejsmate);
@@ -53,6 +55,16 @@ app.use(session({
    }}));
    app.use(passport.initialize());
    app.use(passport.session());
+   passport.use(new Google({
+      clientID: process.env.CLIENTID,
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: "http://localhost:8080/auth/google/callback",
+  },
+  (accessToken,refreshToken,profile,done)=>{
+      return done(null,profile)
+  }));
+  passport.serializeUser((user,done)=> done(null,user));
+  passport.deserializeUser((user,done)=>done(null,user));  
    
    passport.use(new passportLocal(User.authenticate()));
    passport.serializeUser(User.serializeUser());
@@ -123,6 +135,39 @@ app.delete("/delete/cart", async (req, res) => {
        res.status(500).send("An error occurred while trying to delete the item.");
    }
 });
+
+//google login
+app.get("/auth/google", passport.authenticate('google', {scope: ['profile','email']}));
+
+app.get(
+   "/auth/google/callback",
+   passport.authenticate('google', { failureRedirect: '/home' }),
+   async (req, res) => {
+     const googleProfile = req.user;
+     const username = googleProfile.displayName;
+     const email = googleProfile.emails[0].value;
+ 
+     try {
+       let user = await User.findOne({ email });
+       if (!user) {  
+         user = new User({
+           username,
+           email,
+           cart: [], 
+         });
+         await user.save();
+       }
+       req.login(user, (err) => {
+         if (err) return next(err);
+         res.redirect("/home");
+       });
+     } catch (error) {
+       console.error("Error handling Google login:", error);
+       res.redirect("/home");
+     }
+   }
+ );
+ 
 
 
 app.listen(8080,()=>{
