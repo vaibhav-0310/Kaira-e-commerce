@@ -33,7 +33,7 @@ app.use(express.json());
 
 //database connection 
 async function main() {
-   await mongoose.connect("mongodb://127.0.0.1/kiara");
+   await mongoose.connect(process.env.ATLASDB_URL);
 };
 main()
 .then((res)=>{
@@ -147,7 +147,6 @@ app.get(
      const username = googleProfile.displayName;
      const email = googleProfile.emails[0].value;
  
-     try {
        let user = await User.findOne({ email });
        if (!user) {  
          user = new User({
@@ -161,11 +160,7 @@ app.get(
          if (err) return next(err);
          res.redirect("/home");
        });
-     } catch (error) {
-       console.error("Error handling Google login:", error);
-       res.redirect("/home");
-     }
-   }
+     } 
  );
  
 

@@ -8,9 +8,10 @@ const electronic=require("../models/electric.js");
 const ele=require("./electronics.js");
 const child=require("../models/child.js");
 const ch=require("./child.js");
+require("dotenv").config();
 
 async function main(){
-    await mongoose.connect(url);
+    await mongoose.connect("mongodb+srv://vbhargav0310:Jaimatadi@cluster0.yo8jy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
 }
 main()
 .then((res)=>{

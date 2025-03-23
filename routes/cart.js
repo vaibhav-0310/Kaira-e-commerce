@@ -27,6 +27,7 @@ try {
 router.get("/cart/:id",async(req,res)=>{
 let id=req.params.id;
 let clothInfo=await cart.findById(id);
+console.log(clothInfo);
 if(clothInfo){
 res.render("./utils/showCloth.ejs",{clothInfo});
 }
