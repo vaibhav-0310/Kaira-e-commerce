@@ -9,16 +9,16 @@ router.get("/signup",(req,res)=>{
  });
  
  router.post("/signup",async(req,res)=>{
-    const { username, email, password } = req.body;
+    const { username, email, password,role } = req.body;
      try {
-         const user = new User({ username, email });
+         const user = new User({ username, email , role});
          const reg=await User.register(user, password);
          req.login(reg,(err)=>{
           if(err){
               return next(err);
           }
           req.flash("success","Login Successfull!");
-         res.redirect("/dashboard")});
+         res.redirect("/home")});
      } catch (err) {
          req.flash("error",err);
          console.error("Error registering user:", err);
@@ -35,7 +35,7 @@ router.get("/signup",(req,res)=>{
      failureFlash: true
    }), (req,res)=>{
       req.flash("success","Login Successfull!");
-    res.redirect("/dashboard");
+    res.redirect("/home");
    });
  router.get("/logout",(req,res,next)=>{
     req.logOut((err)=>{
@@ -44,7 +44,7 @@ router.get("/signup",(req,res)=>{
        }
     });
     req.flash("success","Logout Successfull!");
-    res.redirect("/dashboard");
+    res.redirect("/home");
  });
  
  module.exports=router;

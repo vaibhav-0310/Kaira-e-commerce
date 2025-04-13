@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
   <div class="container-fluid" style="font-size: large !important;">
     <a class="navbar-brand" href="/home">
-      <img src="/images/download.png" style="height: 30px;width: 40px;">KAIRA</a>
+      <img src="/images/download.png" style="height: 30px;width: 40px;">Kiara</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -49,11 +49,11 @@
             <% if(currUser){ %>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
+                 <%-currUser.username%>
                 </a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="/logout">logout</a></li>
-                  <% if(currUser.function=="admin"){ %>
+                  <% if(currUser.role=="admin"){ %>
                   <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
                   <% } %>
                 </ul>
