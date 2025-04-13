@@ -14,6 +14,7 @@ const passportLocal=require("passport-local");
 const multer=require("multer");
 const cart=require("./models/cart.js");
 const clothing=require("./routes/clothing.js");
+const dashboard=require("./routes/dashboard.js");
 const login=require("./routes/login.js");
 const search=require("./routes/search.js");
 const carte=require("./routes/cart.js");
@@ -76,6 +77,7 @@ app.use(async (req, res, next) => {
    if (req.isAuthenticated()) {
       const user = await User.findById(req.user._id);
       res.locals.items = user.cart.length;
+      console.log(user);
   } else {
       res.locals.items = 0;
   }
@@ -89,6 +91,7 @@ app.use(async (req, res, next) => {
 //routes
 app.use("/clothing",clothing);
 app.use(login);
+app.use(dashboard);
 app.use(search);
 app.use(carte);
  app.use("/listings/:id/review",reviewrouter);

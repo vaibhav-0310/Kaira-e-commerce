@@ -17,6 +17,7 @@ router.post("/cart",async(req,res)=>{
 router.get("/cart",isLoggedIn,async(req,res)=>{
 try {
   const user = await User.findById(req.user._id).populate("cart"); 
+  console.log(user.cart);
   res.render("./utils/cart.ejs", { allCart: user.cart });
 } catch (err) {
   console.error("Error fetching cart items:", err);

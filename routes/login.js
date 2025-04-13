@@ -18,7 +18,7 @@ router.get("/signup",(req,res)=>{
               return next(err);
           }
           req.flash("success","Login Successfull!");
-         res.redirect("/home")});
+         res.redirect("/dashboard")});
      } catch (err) {
          req.flash("error",err);
          console.error("Error registering user:", err);
@@ -35,7 +35,7 @@ router.get("/signup",(req,res)=>{
      failureFlash: true
    }), (req,res)=>{
       req.flash("success","Login Successfull!");
-    res.redirect("/home");
+    res.redirect("/dashboard");
    });
  router.get("/logout",(req,res,next)=>{
     req.logOut((err)=>{
@@ -44,7 +44,7 @@ router.get("/signup",(req,res)=>{
        }
     });
     req.flash("success","Logout Successfull!");
-    res.redirect("/home");
+    res.redirect("/dashboard");
  });
  
  module.exports=router;
