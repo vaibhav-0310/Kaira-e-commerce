@@ -5,12 +5,12 @@ const User = require('../models/user');
 
 router.get('/dashboard', async (req, res) => {
     if (req.user) {
-        console.log(req.user); // ✅ safer than console.group
+        console.log(req.user); 
 
         const user = await User.findById(req.user._id);
         const items = await ChildClothing.find({ owner: user._id });
 
-        return res.render('user/dashboard', { user, items }); // ✅ clean path
+        return res.render('user/dashboard', { user, items }); 
     }
     res.redirect("/home");
 });

@@ -21,6 +21,8 @@ const carte=require("./routes/cart.js");
 const reviewrouter=require("./routes/review.js");
 const flash=require("connect-flash");
 const Google=require("passport-google-oauth20");
+const { client } = require('./paypal');
+const paypal = require('@paypal/checkout-server-sdk');
 
 //middleware
 app.engine("ejs",ejsmate);
@@ -165,11 +167,84 @@ app.get(
        });
      } 
  );
- 
 
+// Capture PayPal payment
+app.post("/capture-paypal-order", async (req, res) => {
+    const { orderID } = req.body;
+    
+    const request = new paypal.orders.OrdersCaptureRequest(orderID);
+    request.requestBody({});
+
+    try {
+        const capture = await client().execute(request);
+        
+        if (capture.result.status === 'COMPLETED') {
+            if (req.isAuthenticated()) {
+                const user = await User.findById(req.user._id);
+                // Delete all cart items
+                await cart.deleteMany({ _id: { $in: user.cart } });
+                // Clear user's cart array
+                await User.findByIdAndUpdate(req.user._id, { $set: { cart: [] } });
+            }
+            
+            res.json({ 
+                success: true, 
+                captureID: capture.result.id,
+                message: "Payment completed successfully" 
+            });
+        } else {
+            res.json({ 
+                success: false, 
+                message: "Payment not completed" 
+            });
+        }
+    } catch (err) {
+        console.error("PayPal capture error:", err);
+        res.status(500).json({ 
+            success: false, 
+            message: "Error capturing PayPal payment" 
+        });
+    }
+});
+
+// Payment success page
+app.get("/payment-success", (req, res) => {
+    req.flash("success", "Payment completed successfully! Thank you for your purchase.");
+    res.render("utils/payment.ejs");
+});
+
+// create order route 
+app.post("/create-paypal-order", async (req, res) => {
+    const request = new paypal.orders.OrdersCreateRequest();
+    request.prefer("return=representation");
+    
+    const { amount } = req.body;
+    
+    request.requestBody({
+        intent: "CAPTURE",
+        purchase_units: [{
+            amount: {
+                currency_code: "USD",
+                value: amount
+            },
+            description: "Cart purchase"
+        }]
+    });
+
+    try {
+        const order = await client().execute(request);
+        res.json({ orderID: order.result.id });
+    } catch (err) {
+        console.error("PayPal order creation error:", err);
+        res.status(500).json({ 
+            success: false, 
+            message: "Error creating PayPal order" 
+        });
+    }
+});
 
 app.listen(8080,()=>{
-   console.log("server started");
+   console.log("server started at http://localhost:8080");
 });
 app.get("*",(req,res)=>{
    res.send("page not found !!");
