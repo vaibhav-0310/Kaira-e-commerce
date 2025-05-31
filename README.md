@@ -48,8 +48,22 @@ Kiara is a modern, stylish, and full-featured e-commerce website built with Node
 4. Run the app
 
    ```bash
-   npm start
+   npm run start
    ```
+## ScreenShots
+![image](https://github.com/user-attachments/assets/5c000e64-30fa-4a9e-bc6b-7ff210114832)
+
+![image](https://github.com/user-attachments/assets/8112c619-6644-4d42-98e5-1a5556b02f0c)
+
+![image](https://github.com/user-attachments/assets/33be3282-6409-43c1-b6ac-c7a0a8cd606d)
+
+![image](https://github.com/user-attachments/assets/d8ffee90-42be-494f-9cbf-4b6bfc2d1252)
+
+![image](https://github.com/user-attachments/assets/c3d69690-d8e1-434a-aa6c-69cd43a4bbef)
+
+
+
+
 
 ## 🧠 Future Enhancements
 
