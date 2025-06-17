@@ -69,4 +69,3 @@ Kiara is a modern, stylish, and full-featured e-commerce website built with Node
 
 * User profile management
 * Wishlist functionality
-* REST API version
